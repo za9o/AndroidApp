@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ReadySystem</string>
+    <string name="login_button">Login</string>
+    <string name="register_button">Register</string>
+    <string name="new_user_button">New user</string>
+    <string name="check_connectivity_button">Test Conn</string>
+    <string name="username_edittext">Enter username</string>
+    <string name="password_edittext">Enter password</string>
+    <string name="ipaddress_edittext">Enter server IP</string>
+    <string name="login_screen_description_edittext">User login</string>
+    <string name="serverip_edittext">192.168.0.199</string>
+</resources>

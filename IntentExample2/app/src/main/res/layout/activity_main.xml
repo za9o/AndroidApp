@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/loginscreendescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dip"
+        android:gravity="center"
+        android:hint="@string/login_screen_description_edittext"
+        android:textSize="20sp" >
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/ipaddressinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:minHeight="60dip"
+            android:text="@string/serverip_edittext"
+            android:textSize="15sp" >
+        </EditText>
+        <Button
+            android:id="@+id/checkconnectivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:onClick="checkServerConnectivityFromButton"
+            android:text="@string/check_connectivity_button" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ipaddressinput"
+        android:gravity="center"
+        android:minHeight="60dip"
+        android:hint="@string/username_edittext"
+        android:textSize="15sp" >
+    </EditText>
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username"
+        android:inputType="textPassword"
+        android:gravity="center"
+        android:minHeight="60dip"
+        android:hint="@string/password_edittext"
+        android:textSize="15sp" >
+    </EditText>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password">
+        <Button
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:onClick="Register"
+            android:text="@string/new_user_button" />
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="Login"
+            android:text="@string/login_button"
+        />
+
+    </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
