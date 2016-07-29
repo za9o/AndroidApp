@@ -9,4 +9,6 @@
     <string name="ipaddress_edittext">Enter server IP</string>
     <string name="login_screen_description_edittext">User login</string>
     <string name="serverip_edittext">192.168.0.199</string>
+    <string name="activate_gps_button">Activate GPS</string>
+    <string name="deactivate_gps_button">Deactivate GPS</string>
 </resources>

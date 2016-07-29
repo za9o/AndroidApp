@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import android.widget.Button;
 
 /**
  * Created by Torjus on 2016-07-23.
@@ -43,6 +45,7 @@ public class GpsActivity extends Activity {
     String[] permissionRequest = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
     String ipAddressInputFromUser;
     int inputIntGpsid;
+    Button btn;
 
     private int[] permission = {0};
 
@@ -56,6 +59,7 @@ public class GpsActivity extends Activity {
         latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
         Bundle extras = getIntent().getExtras();
         inputIntGpsid = extras.getInt("gpsid");
+        btn = (Button) findViewById(R.id.activateGPSButton);
         ipAddressInputFromUser = extras.getString("ipAddressInputFromUser");
 
         toggleGPSUpdates();
@@ -157,6 +161,8 @@ public class GpsActivity extends Activity {
 
     public void deactivateGPS(View view) {
         try {
+            btn.setText("Activate GPS");
+            btn.setEnabled(true);
             locationManager.removeUpdates(locationListenerGPS);
         } catch (SecurityException e) {
             Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
@@ -170,6 +176,10 @@ public class GpsActivity extends Activity {
                         ActivityCompat.requestPermissions(this, permissionRequest, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
         } else {
+            btn.setEnabled(false);
+            btn.setText("Searching for GPS...");
+            latitudeValueGPS.setText("0.000000");
+            longitudeValueGPS.setText("0.00000");
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListenerGPS);
         }
     }
