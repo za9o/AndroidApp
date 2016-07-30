@@ -30,6 +30,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.spec.PKCS8EncodedKeySpec;
+
 import android.widget.Button;
 
 /**
@@ -41,7 +43,7 @@ public class GpsActivity extends Activity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_INTERNET = 1;
     LocationManager locationManager;
     double longitudeGPS, latitudeGPS;
-    TextView longitudeValueGPS, latitudeValueGPS;
+    TextView longitudeValueGPS, latitudeValueGPS, gpsIDText;
     String[] permissionRequest = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
     String ipAddressInputFromUser;
     int inputIntGpsid;
@@ -57,10 +59,12 @@ public class GpsActivity extends Activity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         longitudeValueGPS = (TextView) findViewById(R.id.longitudeValueGPS);
         latitudeValueGPS = (TextView) findViewById(R.id.latitudeValueGPS);
+        gpsIDText = (TextView) findViewById(R.id.gpsid);
         Bundle extras = getIntent().getExtras();
         inputIntGpsid = extras.getInt("gpsid");
         btn = (Button) findViewById(R.id.activateGPSButton);
         ipAddressInputFromUser = extras.getString("ipAddressInputFromUser");
+        gpsIDText.setText(Integer.toString(inputIntGpsid));
 
         toggleGPSUpdates();
     }
@@ -176,8 +180,9 @@ public class GpsActivity extends Activity {
                         ActivityCompat.requestPermissions(this, permissionRequest, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
         } else {
+
             btn.setEnabled(false);
-            btn.setText("Searching for GPS...");
+            btn.setText("Obtaining gps values");
             latitudeValueGPS.setText("0.000000");
             longitudeValueGPS.setText("0.00000");
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListenerGPS);
@@ -322,4 +327,5 @@ public class GpsActivity extends Activity {
         }).start();
         return false;
     }
+
 }

@@ -54,4 +54,24 @@
             android:onClick="deactivateGPS"
             android:text="@string/deactivate_gps_button"/>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/gpsidtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gpsid_text">
+    </TextView>
+
+    <TextView
+        android:id="@+id/gpsid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Well hello there">
+    </TextView>
+    </RelativeLayout>
+
 </LinearLayout>

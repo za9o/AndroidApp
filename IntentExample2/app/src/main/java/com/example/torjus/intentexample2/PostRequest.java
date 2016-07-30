@@ -35,8 +35,8 @@ public class PostRequest {
     public void writeJSON(String username, String password, String ipAddressFromUser, String httpLink) {
         JSONObject object = new JSONObject();
 
-        progress.setTitle("Creating new user");
-        progress.setMessage("Please wait while creating new user...");
+        progress.setTitle("Handling user request");
+        progress.setMessage("Please wait...");
         //progress.setCancelable(false);
         progress.show();
         try {

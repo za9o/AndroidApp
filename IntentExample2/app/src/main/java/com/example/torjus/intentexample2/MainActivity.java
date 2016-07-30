@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 public class MainActivity extends Activity {
 
     EditText username;
@@ -14,6 +17,7 @@ public class MainActivity extends Activity {
     EditText ipAddress;
     CheckConnectivity checkConnectivity;
     PostRequest postRequest;
+    EncryptInputToServer encryptInputToServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,7 @@ public class MainActivity extends Activity {
         ipAddress = (EditText)findViewById(R.id.ipaddressinput);
         postRequest = new PostRequest(MainActivity.this, this);
         checkConnectivity = new CheckConnectivity(MainActivity.this, this);
+        encryptInputToServer = new EncryptInputToServer();
     }
 
     public void checkServerConnectivityFromButton(View view) {
@@ -35,11 +40,11 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void Login(View view) {
+    public void Login(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 
         if(!username.getText().toString().matches("")) {
             if (!password.getText().toString().matches("")) {
-                postRequest.writeJSON(username.getText().toString(), password.getText().toString(), ipAddress.getText().toString(), "login");
+                postRequest.writeJSON(username.getText().toString(), encryptInputToServer.SHA1(password.getText().toString()), ipAddress.getText().toString(), "login");
             } else {
                 Toast.makeText(MainActivity.this, "password field empty", Toast.LENGTH_SHORT).show();
             }
