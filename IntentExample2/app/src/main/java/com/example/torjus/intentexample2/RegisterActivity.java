@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -33,7 +32,6 @@ public class RegisterActivity extends Activity {
         postRequest = new PostRequest(RegisterActivity.this, this);
 
         checkConnectivity = new CheckConnectivity(RegisterActivity.this, this);
-
     }
 
     public void RegisterNewUser(View view) throws UnsupportedEncodingException, NoSuchAlgorithmException {

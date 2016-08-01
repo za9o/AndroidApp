@@ -4,9 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by Torjus on 2016-07-30.
- */
 public class EncryptInputToServer {
 
     private static String convertToHex(byte[] data) {
@@ -23,7 +20,7 @@ public class EncryptInputToServer {
     }
 
     public static String SHA1(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(text.getBytes("UTF-8"), 0, text.length());
         byte[] sha1hash = md.digest();
 

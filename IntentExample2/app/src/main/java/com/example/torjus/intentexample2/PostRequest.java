@@ -96,7 +96,9 @@ public class PostRequest {
                     else if (connection.getResponseCode() == 400) {
                         InputStream is = connection.getErrorStream();
                         final String errorstream = StringUtility.convertInputStreamToString(is);
-                        createStatusToast(errorstream);
+                        JSONObject inputFromServer = new JSONObject(errorstream);
+                        String errorMessage = inputFromServer.get("errorMessage").toString();
+                        createStatusToast(errorMessage);
                     }
                 }  catch (SocketTimeoutException e) {
                     createStatusToast("Connection timed out");

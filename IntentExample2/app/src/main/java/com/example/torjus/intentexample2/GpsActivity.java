@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -30,9 +31,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import android.widget.Button;
 
 /**
  * Created by Torjus on 2016-07-23.
@@ -47,9 +48,14 @@ public class GpsActivity extends Activity {
     String[] permissionRequest = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
     String ipAddressInputFromUser;
     int inputIntGpsid;
-    Button btn;
+    Button btn, redTeamButton, blueTeamButton;
+    int teamvalue = 0;
+    CheckConnectivity checkConnectivity;
+    PowerManager pm = null;
+    PowerManager.WakeLock wl;
 
-    private int[] permission = {0};
+    Timer timer = new Timer();
+
 
 
     @Override
@@ -63,10 +69,54 @@ public class GpsActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         inputIntGpsid = extras.getInt("gpsid");
         btn = (Button) findViewById(R.id.activateGPSButton);
+        redTeamButton = (Button) findViewById(R.id.redteambutton);
+        blueTeamButton = (Button) findViewById(R.id.blueteambutton);
         ipAddressInputFromUser = extras.getString("ipAddressInputFromUser");
+        blueTeamButton.setEnabled(false);
+        checkConnectivity = new CheckConnectivity(GpsActivity.this, this);
         gpsIDText.setText(Integer.toString(inputIntGpsid));
 
         toggleGPSUpdates();
+        keepWiFiOn();
+        //tryConnection();
+    }
+
+    public void setRedTeam(View view) {
+        teamvalue = 1;
+        redTeamButton.setEnabled(false);
+        blueTeamButton.setEnabled(true);
+    }
+
+    public void setBlueTeam(View view) {
+        teamvalue = 0;
+        redTeamButton.setEnabled(true);
+        blueTeamButton.setEnabled(false);
+    }
+
+    public void deactivateGPS(View view) {
+        try {
+            btn.setText("Activate GPS");
+            btn.setEnabled(true);
+            locationManager.removeUpdates(locationListenerGPS);
+        } catch (SecurityException e) {
+            Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
+        }
+    }
+    public void activateGPS(View view) {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(this, permissionRequest, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            }
+        } else {
+
+            btn.setEnabled(false);
+            btn.setText("Obtaining gps values");
+            latitudeValueGPS.setText("0.000000");
+            longitudeValueGPS.setText("0.00000");
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListenerGPS);
+        }
     }
 
     private boolean checkLocation() {
@@ -103,6 +153,7 @@ public class GpsActivity extends Activity {
         } catch (SecurityException e) {
             Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
         }
+        wl.release();
         finish();
     }
 
@@ -163,32 +214,6 @@ public class GpsActivity extends Activity {
         }
     };
 
-    public void deactivateGPS(View view) {
-        try {
-            btn.setText("Activate GPS");
-            btn.setEnabled(true);
-            locationManager.removeUpdates(locationListenerGPS);
-        } catch (SecurityException e) {
-            Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
-        }
-    }
-    public void activateGPS(View view) {
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        ActivityCompat.requestPermissions(this, permissionRequest, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            }
-        } else {
-
-            btn.setEnabled(false);
-            btn.setText("Obtaining gps values");
-            latitudeValueGPS.setText("0.000000");
-            longitudeValueGPS.setText("0.00000");
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListenerGPS);
-        }
-    }
-
 /*    public void activateNetwork() {
 //Trenger jeg denne?
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
@@ -221,6 +246,7 @@ public class GpsActivity extends Activity {
 
             object.put("latitude", latitudeFromGPS);
             object.put("longitude", longitudeFromGPS);
+            object.put("teamvalue", teamvalue);
             object.put("gpsid",inputIntGpsid);
             postRequest(object);
             //excutePost("http://192.168.1.2:8080/rest/test/json/teams/setgpsposition", object);
@@ -247,10 +273,6 @@ public class GpsActivity extends Activity {
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Content-Type", "application/json"); // here you are setting the `Content-Type` for the data you are sending which is `application/json`
                     connection.setReadTimeout(10000);
-/*                    Writer writer = new OutputStreamWriter(connection.getOutputStream());
-                    writer.write(postOject.toString());
-                    writer.flush();
-                    writer.close();*/
                     connection.connect();
                     DataOutputStream wr = new DataOutputStream(
                             connection.getOutputStream ());
@@ -277,55 +299,24 @@ public class GpsActivity extends Activity {
         }).start();
     }
 
-    public static Boolean excutePost2(final String targetURL, final JSONObject jsonParam)
-    {
-        new Thread(new Runnable() {
+    private void tryConnection() {
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-
-        URL url;
-        HttpURLConnection connection = null;
-        try {
-            url = new URL(targetURL);
-            connection = (HttpURLConnection)url.openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST"); // hear you are telling that it is a POST request, which can be changed into "PUT", "GET", "DELETE" etc.
-            connection.setRequestProperty("Content-Type", "application/json"); // here you are setting the `Content-Type` for the data you are sending which is `application/json`
-            connection.connect();
-
-            //Send request
-            DataOutputStream wr = new DataOutputStream(
-                    connection.getOutputStream ());
-            wr.writeBytes(jsonParam.toString());
-            wr.flush();
-            wr.close ();
-
-            InputStream is;
-            int response = connection.getResponseCode();
-            if (response >= 200 && response <=399){
-                //return is = connection.getInputStream();
-                //return true;
-            } else {
-                //return is = connection.getErrorStream();
-                //return false;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e("TAG", checkConnectivity.checkConnectivityToServer(ipAddressInputFromUser));
+                    }
+                });
             }
+        }, 10* 1000, 10 * 1000);
 
-
-        } catch (Exception e) {
-            Log.e("Tag", e.toString());
-            e.printStackTrace();
-            //return false;
-
-        } finally {
-
-            if(connection != null) {
-                connection.disconnect();
-            }
-        }
-
-            }
-        }).start();
-        return false;
     }
 
+    private void keepWiFiOn() {
+        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
+        wl.acquire();
+    }
 }

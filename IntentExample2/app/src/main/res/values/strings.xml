@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ReadySystem</string>
+    <string name="app_name">BattleNetTracker</string>
     <string name="login_button">Login</string>
     <string name="register_button">Register</string>
     <string name="new_user_button">New user</string>
@@ -12,4 +12,12 @@
     <string name="serverip_edittext">192.168.0.199</string>
     <string name="activate_gps_button">Activate GPS</string>
     <string name="deactivate_gps_button">Deactivate GPS</string>
+    <string name="red_team_button">Red Team</string>
+    <string name="blue_team_button">Blue Team</string>
+    <string name="disclaimer_heading">Disclaimer</string>
+    <string name="disclaimer_text">
+        BattleNetTracker is not responsible for any damage done to you or your phone.
+        This software will track your position and store the values to a server.
+        These values will be used to track your movement, while playing.
+    </string>
 </resources>

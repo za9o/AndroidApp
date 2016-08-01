@@ -1,10 +1,15 @@
 package com.example.torjus.intentexample2;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -18,17 +23,21 @@ public class MainActivity extends Activity {
     CheckConnectivity checkConnectivity;
     PostRequest postRequest;
     EncryptInputToServer encryptInputToServer;
+    View vi;
+    RelativeLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
         ipAddress = (EditText)findViewById(R.id.ipaddressinput);
         postRequest = new PostRequest(MainActivity.this, this);
         checkConnectivity = new CheckConnectivity(MainActivity.this, this);
         encryptInputToServer = new EncryptInputToServer();
+        showDisclaimerAlert();
     }
 
     public void checkServerConnectivityFromButton(View view) {
@@ -58,6 +67,26 @@ public class MainActivity extends Activity {
                 } else {
                     Toast.makeText(MainActivity.this, "Wrong username and/or password", Toast.LENGTH_SHORT).show();
                 }*/
+    }
+
+    private void showDisclaimerAlert() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.disclaimer_heading)
+                .setMessage(R.string.disclaimer_text)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
     }
 
     public void Register(View view) {

@@ -11,8 +11,10 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:minHeight="60dip"
+        android:singleLine="true"
         android:text="@string/serverip_edittext"
-        android:textSize="15sp" >
+        android:textSize="15sp"
+        android:nextFocusDown="@id/username">
     </EditText>
     <Button
         android:id="@+id/checkconnectivity"
@@ -30,7 +32,8 @@
         android:layout_below="@id/ipaddressinput"
         android:minHeight="60dip"
         android:hint="@string/username_edittext"
-        android:textSize="16sp" >
+        android:textSize="16sp"
+        android:singleLine="true">
     </EditText>
     <EditText
         android:id="@+id/password"
@@ -40,8 +43,9 @@
         android:inputType="textPassword"
         android:gravity="center"
         android:minHeight="60dip"
+        android:singleLine="true"
         android:hint="@string/password_edittext"
-        android:textSize="16sp" >
+        android:textSize="16sp">
     </EditText>
 
         <Button

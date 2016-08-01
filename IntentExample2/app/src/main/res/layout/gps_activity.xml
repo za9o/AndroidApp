@@ -74,4 +74,25 @@
     </TextView>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/latitudeValueGPS">
+
+        <Button
+            android:id="@+id/blueteambutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="setBlueTeam"
+            android:text="@string/blue_team_button"/>
+
+        <Button
+            android:id="@+id/redteambutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:onClick="setRedTeam"
+            android:text="@string/red_team_button"/>
+    </RelativeLayout>
+
 </LinearLayout>
