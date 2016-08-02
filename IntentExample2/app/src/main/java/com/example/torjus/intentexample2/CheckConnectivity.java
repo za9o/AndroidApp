@@ -62,11 +62,11 @@ public class CheckConnectivity {
                         @Override
                         public void run() {
                             if("Connected".equals(result)) {
-                                //ipAddress.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+                                ipAddress.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
                                 progress.dismiss();
                                 createStatusToast("Connected");
                             } else {
-                                //ipAddress.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                                ipAddress.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
                                 result = "";
                                 progress.dismiss();
                                 createStatusToast("Hvorfor er jeg her?");

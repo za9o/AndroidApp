@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.wifi.WifiManager;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Looper;
@@ -53,6 +54,8 @@ public class GpsActivity extends Activity {
     CheckConnectivity checkConnectivity;
     PowerManager pm = null;
     PowerManager.WakeLock wl;
+    WifiManager wifiManager;
+    WifiManager.WifiLock lock;
 
     Timer timer = new Timer();
 
@@ -153,7 +156,8 @@ public class GpsActivity extends Activity {
         } catch (SecurityException e) {
             Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
         }
-        wl.release();
+        //wl.release();
+        lock.release();
         finish();
     }
 
@@ -315,8 +319,12 @@ public class GpsActivity extends Activity {
     }
 
     private void keepWiFiOn() {
-        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        /*pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
-        wl.acquire();
+        wl.acquire();*/
+
+        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        lock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "LockTag");
+        lock.acquire();
     }
 }
