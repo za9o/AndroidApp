@@ -49,7 +49,7 @@ public class CheckConnectivity {
                 Looper.prepare();
                 InputStream inputStream = null;
                 try {
-                    URL url = new URL("http://" + ipAddressInputFromUser + ":8080/rest/test/json/teams/checkconnectivity");
+                    URL url = new URL("http://" + ipAddressInputFromUser + ":8080/rest/test/get/checkconnectivity");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setConnectTimeout(4000);

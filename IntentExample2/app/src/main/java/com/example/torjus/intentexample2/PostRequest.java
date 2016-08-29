@@ -64,7 +64,7 @@ public class PostRequest {
             public void run() {
 
                 try {
-                    URL url = new URL("http://" + ipAddressInputFromUser + ":8080/rest/test/json/teams/" + httpLink);
+                    URL url = new URL("http://" + ipAddressInputFromUser + ":8080/rest/test/post/" + httpLink);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     //Set to POST
                     connection.setDoOutput(true);

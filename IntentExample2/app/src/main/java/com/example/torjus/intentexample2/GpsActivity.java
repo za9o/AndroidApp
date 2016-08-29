@@ -270,7 +270,7 @@ public class GpsActivity extends Activity {
             public void run() {
 
                 try {
-                    URL url = new URL("http://" + ipAddressInputFromUser + ":8080/rest/test/json/teams/setgpsposition");
+                    URL url = new URL("http://" + ipAddressInputFromUser + ":8080/rest/test/post/setgpsposition");
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     //Set to POST
                     connection.setDoOutput(true);
